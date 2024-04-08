@@ -15,6 +15,7 @@ public class TodoRegisterController extends HttpServlet {
             throws ServletException, IOException {
         System.out.println("입력화면을 볼 수 있도록 구성");
 
+        // 변수 dispatcher에 할당
         RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/todo/register.jsp");
         dispatcher.forward(req, resp);
     }
