@@ -46,6 +46,29 @@ public class TodoDAOTests {
         list.forEach(vo -> System.out.println(vo));
     }
 
+    @Test
+    public void testSelectOne() throws Exception{
+        Long tno = 1L;
 
+        TodoVO vo = todoDAO.selectOne(tno);
 
+        System.out.println(vo);
+    }
+
+    @Test
+    public void testDeleteOne() throws Exception{
+        todoDAO.deleteOne(7L);
+    }
+
+    @Test
+    public void testUpdateOne() throws Exception{
+        TodoVO todoVO = TodoVO.builder()
+                .tno(1L)
+                .title("Sample Title...")
+                .dueDate(LocalDate.of(2021, 12, 31))
+                .finished(true)
+                .build();
+
+        todoDAO.updateOne(todoVO);
+    }
 }
