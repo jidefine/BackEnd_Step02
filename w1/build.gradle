@@ -26,6 +26,18 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+    
+    // 직접 다운받아서 포함시키지 않고 앞으로는 여기에 라이브러리를 추가
+    // https://mvnrepository.com/artifact/jstl/jstl
+    implementation group: 'jstl', name: 'jstl', version: '1.2'
+
+    implementation 'org.mariadb.jdbc:mariadb-java-client:3.0.3'
+
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.32'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
 }
 
 test {
