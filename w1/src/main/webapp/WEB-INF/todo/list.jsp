@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: bitcamp1
@@ -11,6 +12,8 @@
     <title>Title</title>
 </head>
 <body>
-    <h1>List Page</h1>
+    <c:forEach var="dto" items="${list}"> <!--El: ${list}-->
+        <li>${dto}</li>
+    </c:forEach>
 </body>
 </html>
