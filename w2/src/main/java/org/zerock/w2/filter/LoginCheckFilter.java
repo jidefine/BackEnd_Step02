@@ -12,9 +12,9 @@ import java.io.IOException;
 
 @WebFilter(urlPatterns = {"/todo/*"})
 @Log4j2
-public class loginCheckFilter implements Filter {
+public class LoginCheckFilter implements Filter {
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
             throws IOException, ServletException {
         log.info("Login Check Filter....");
 
@@ -29,6 +29,6 @@ public class loginCheckFilter implements Filter {
             return;
         }
         // 다음 필터 또는 서블릿으로 전달
-        chain.doFilter(request, response);
+        filterChain.doFilter(request, response);
     }
 }

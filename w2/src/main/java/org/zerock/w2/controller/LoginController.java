@@ -33,7 +33,7 @@ public class LoginController extends HttpServlet {
 
         HttpSession session = req.getSession();
 
-        // 임시로 id+pw의 문자열
+        // 임시로 id+pw의 문자열을 loginInfo로 session에 저장
         session.setAttribute("logininfo", str);
         resp.sendRedirect("/todo/list");
     }
