@@ -18,7 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class SampleTests {
     
     // 자동 주입
-    // 필드 주입 방식
+    //
     // spring이 제공하는 어노테이션
     @Autowired
     private SampleService sampleService;
