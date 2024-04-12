@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 public class MemberDAO {
     public MemberVO getWithPassword(String mid, String mpw) throws Exception{
-        String query = "selct mid, mpw, mname from tdl_member where mid=? and mpw=?";
+        String query = "select mid, mpw, mname from tdl_member where mid=? and mpw=?";
 
         MemberVO memberVO = null;
 
@@ -28,5 +28,17 @@ public class MemberDAO {
                 .mname(resultSet.getString(3))
                         .build();
                 return memberVO;
+    }
+
+    public void updateUuid(String mid, String uuid) throws Exception{
+        String sql = "update tdl_member set uuid =? where mid =?";
+
+        @Cleanup Connection connection = ConnectionUtil.INSTANCE.getConnection();
+        @Cleanup PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+        preparedStatement.setString(1, uuid);
+        preparedStatement.setString(2, mid);
+
+        preparedStatement.executeUpdate();
     }
 }
