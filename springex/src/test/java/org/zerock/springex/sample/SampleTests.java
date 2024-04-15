@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
+
 /* ServletContext : tomcat의 전역영역, tomcat의 Container가 관리하는 영역
 *  App
 * */
@@ -23,9 +26,21 @@ public class SampleTests {
     @Autowired
     private SampleService sampleService;
 
+    @Autowired
+    private DataSource dataSource;
+
     @Test
     public void testService1(){
         log.info(sampleService);
         Assertions.assertNotNull(sampleService); // 값이 유효한지를 판별
+    }
+
+    @Test
+    public void testConnection() throws Exception{
+        Connection connection = dataSource.getConnection();
+        log.info(connection);
+        Assertions.assertNull(connection);
+
+        connection.close();
     }
 }
