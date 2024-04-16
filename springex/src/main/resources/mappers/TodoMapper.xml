@@ -13,6 +13,9 @@
         values  (#{title}, #{dueDate}, #{writer})
     </insert>
 
+    <select id="selectAll" resultType="org.zerock.springex.domain.TodoVO">
+        select * from tdl_todo order by tno desc
+    </select>
 
 
 
