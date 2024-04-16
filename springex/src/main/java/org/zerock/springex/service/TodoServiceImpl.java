@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TodoServiceImpl implements TodoService {
     /*lombok
-    * */
+     * */
     private final TodoMapper todoMapper;
     private final ModelMapper modelMapper;
 
@@ -34,7 +34,7 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public List<TodoDTO> getAll() {
         List<TodoDTO> dtoList = todoMapper.selectAll().stream()
-                .map(vo-> modelMapper.map(vo, TodoDTO.class))
+                .map(vo -> modelMapper.map(vo, TodoDTO.class))
                 .collect(Collectors.toList());
         return dtoList;
     }
@@ -51,4 +51,9 @@ public class TodoServiceImpl implements TodoService {
         todoMapper.delete(tno);
     }
 
+    @Override
+    public void modify(TodoDTO todoDTO) {
+        TodoVO todoVO = modelMapper.map(todoDTO, TodoVO.class);
+        todoMapper.update(todoVO);
+    }
 }
