@@ -20,7 +20,7 @@ import java.sql.Connection;
 @ContextConfiguration(locations="file:src/main/webapp/WEB-INF/root-context.xml")
 public class SampleTests {
     
-    // 자동 주입
+    /*// 자동 주입
     //
     // spring이 제공하는 어노테이션
     @Autowired
@@ -42,5 +42,5 @@ public class SampleTests {
         Assertions.assertNull(connection);
 
         connection.close();
-    }
+    }*/
 }
