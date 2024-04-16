@@ -1,5 +1,6 @@
 package org.zerock.springex.mapper;
 
+import com.sun.tools.javac.comp.Todo;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,5 +39,11 @@ public class TodoMapperTests {
         List<TodoVO> voList = todoMapper.selectAll();
 
         voList.forEach(vo-> log.info(vo));
+    }
+
+    @Test
+    public  void testSelectOne(){
+        TodoVO todoVO = todoMapper.selectOne(3L);
+        log.info(todoVO);
     }
 }
