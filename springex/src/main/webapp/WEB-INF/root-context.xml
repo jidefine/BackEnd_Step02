@@ -7,7 +7,7 @@
 
 <!--        아래의 <bean/> 대신에 에노테이션을 클래스에 옵션으로 주면-->
     <!--    org.zerock.springex.sample 패키지 아래에 있는 모든 클래스를 스캔해서 bean으로 만들어준다.-->
-    <context:component-scan base-package="org.zerock.springex.sample"/>
+<!--    <context:component-scan base-package="org.zerock.springex.sample"/>-->
 
 <!--    <bean class="org.zerock.springex.sample.SampleDAO"></bean>-->
 <!--    <bean class="org.zerock.springex.sample.SampleService"></bean>-->
