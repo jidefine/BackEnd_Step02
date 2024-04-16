@@ -20,6 +20,7 @@ import javax.validation.Valid;
 @Log4j2
 @RequiredArgsConstructor
 public class TodoController {
+
     private final TodoService todoService;
 
     // /todo/list
@@ -49,7 +50,9 @@ public class TodoController {
     TodoDTO내부의 필드들의 이름과 매칭되면 todoDTO객체 내부에 저장된다.
     * */
     @PostMapping("/register")
-    public String registerPost(@Valid TodoDTO todoDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes){
+    public String registerPost(@Valid TodoDTO todoDTO,
+                               BindingResult bindingResult,
+                               RedirectAttributes redirectAttributes){
         log.info("POST todo register......");
 
         /* todoDTO의 제약조건이 오류가 발생했을 때
@@ -67,11 +70,19 @@ public class TodoController {
         return "redirect:/todo/list";
     }
 
-    @GetMapping("/read")
+    @GetMapping({"/read", "/modify"})
     public void read(Long tno, Model model){
         TodoDTO todoDTO = todoService.getOne(tno);
         log.info(todoDTO);
 
         model.addAttribute("dto", todoDTO);
+    }
+
+    @PostMapping("/remove")
+    public String remove(Long tno, RedirectAttributes redirectAttributes){
+        log.info("---------------remove--------------");
+        log.info("tno: " + tno);
+
+        return "redirect:/todo/list";
     }
 }

@@ -21,4 +21,8 @@
         select * from tdl_todo where tno = #{tno}
     </select>
 
+    <delete id="delete">
+        delete from tdl_todo where tno = #{tno}
+    </delete>
+
 </mapper>
