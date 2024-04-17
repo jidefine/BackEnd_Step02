@@ -5,6 +5,9 @@
   Time: 오후 5:15
   To change this template use File | Settings | File Templates.
 --%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -51,10 +54,11 @@
                         Todo Modify
                     </div>
                     <div class="card-body">
-<%--                        <input type="hidden" name="page" value="${pageRequestDTO.page}">--%>
-<%--                        <input type="hidden" name="size" value="${pageRequestDTO.size}">--%>
-
                         <form action="/todo/modify" method="post">
+
+<%--                            <input type="hidden" name="page" value="${pageRequestDTO.page}">--%>
+<%--                            <input type="hidden" name="size" value="${pageRequestDTO.size}">--%>
+
                             <div class="input-group mb-3">
                                 <span class="input-group-text">TNO</span>
                                 <input type="text" name="tno" class="form-control"
@@ -151,6 +155,15 @@
                             formObj.submit()
 
                         },false);
+
+                        /*document.querySelector(".btn-secondary").addEventListener("click",function(e) {
+
+                            e.preventDefault()
+                            e.stopPropagation()
+
+                            self.location = "/todo/list";
+
+                        },false);*/
 
                         document.querySelector(".btn-secondary").addEventListener("click",function(e) {
 
