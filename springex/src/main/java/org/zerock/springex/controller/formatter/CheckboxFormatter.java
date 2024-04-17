@@ -3,7 +3,6 @@ package org.zerock.springex.controller.formatter;
 import java.text.ParseException;
 import java.util.Locale;
 
-import jdk.vm.ci.meta.Local;
 import org.springframework.format.Formatter;
 
 public class CheckboxFormatter  implements Formatter<Boolean> {

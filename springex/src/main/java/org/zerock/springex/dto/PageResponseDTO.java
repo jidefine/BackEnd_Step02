@@ -1,6 +1,8 @@
 package org.zerock.springex.dto;
 
 import lombok.Builder;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.util.List;
 /* jsp에서 bootstrap의 pagination 컴포넌트를 사용하는데
@@ -14,6 +16,8 @@ import java.util.List;
               쇼핑 구매 업무일 때는 OrderDTO 등의 list가 필요하므로
               Geriric으로 만들면 1번 만들어놓고 재사용이 가능하다.
  */
+@Getter
+@ToString
 public class PageResponseDTO<E>{
     private int page; //현재 페이지
     private int size; //현재 보여야 할 row의 크기

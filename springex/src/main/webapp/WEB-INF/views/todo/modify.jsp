@@ -149,15 +149,6 @@
 
                         },false);
 
-                        /*document.querySelector(".btn-secondary").addEventListener("click",function(e) {
-
-                            e.preventDefault()
-                            e.stopPropagation()
-
-                            self.location = "/todo/list";
-
-                        },false);*/
-
                         document.querySelector(".btn-secondary").addEventListener("click",function(e) {
 
                             e.preventDefault()

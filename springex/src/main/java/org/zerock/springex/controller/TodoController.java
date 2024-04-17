@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.zerock.springex.dto.PageRequestDTO;
 import org.zerock.springex.dto.TodoDTO;
 import org.zerock.springex.service.TodoService;
 
+import javax.naming.Binding;
 import javax.validation.Valid;
 
 @Controller
@@ -25,12 +27,28 @@ public class TodoController {
 
     // /todo/list
     @RequestMapping("/list")
-    public void list(Model model){
-        log.info("todo list........");
+//    public void list(Model model){
+//        log.info("todo list........");
+//
+//        //model.addAttribute("dtoList", todoService.getAll());
+//
+//        // /WEB-INF/views/todo/list.jsp
+//    }
+    //@GetMapping
+    public void list(@Valid PageRequestDTO pageRequestDTO,
+                     BindingResult bindingResult,
+                     Model model){
+        log.info("todo list...........");
 
-        model.addAttribute("dtoList", todoService.getAll());
-
-        // /WEB-INF/views/todo/list.jsp
+        if(bindingResult.hasErrors()){
+            // 디폴트 값을 가지게 된다.(page=1, size=10)
+            // 첫번째 페이지가 나오도록
+            pageRequestDTO = PageRequestDTO.builder().build();
+        }
+        // PageRequestDTO를 todoService.getList에 넘겨주면, PageReponseDTO를 리턴한다.
+        // 이 리턴된 값을 model -> request -> jsp에 전달
+        // 이 전달된 responseDTO를 jsp가 꺼내서 boostrap의 pagination 컴포넌트를 구성
+        model.addAttribute("responseDTO", todoService.getList(pageRequestDTO));
     }
 
     // /todo/register
@@ -47,21 +65,18 @@ public class TodoController {
 //    }
 
     /* 웹에서 보내오는 parameter들이
-    TodoDTO내부의 필드들의 이름과 매칭되면 todoDTO객체 내부에 저장된다.
-    * */
+    TodoDTO내부의 필드들의 이름과 매칭되면 todoDTO객체 내부에 저장된다.*/
     @PostMapping("/register")
     public String registerPost(@Valid TodoDTO todoDTO,
                                BindingResult bindingResult,
                                RedirectAttributes redirectAttributes){
         log.info("POST todo register......");
 
-        /* todoDTO의 제약조건이 오류가 발생했을 때
-         * */
+        /* todoDTO의 제약조건이 오류가 발생했을 때*/
         if(bindingResult.hasErrors()){
             log.info("has errors......");
-            redirectAttributes.addFlashAttribute("errors",
-                    bindingResult.getAllErrors());
-            return "redirect:/todo/register";
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            return "/todo/register";
         }
         log.info(todoDTO);
 
@@ -83,23 +98,26 @@ public class TodoController {
         log.info("---------------remove--------------");
         log.info("tno: " + tno);
 
+        todoService.remove(tno);
+
         return "redirect:/todo/list";
     }
-
     @PostMapping("/modify")
-    public String modify(@Valid TodoDTO todoDTO,
+    public String modify(
+                        PageRequestDTO pageRequestDTO,
+                        @Valid TodoDTO todoDTO,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()){
             log.info("has errors......");
-            redirectAttributes.addFlashAttribute("errors",
-                    bindingResult.getAllErrors());
-            redirectAttributes.addFlashAttribute("tno", todoDTO.getTno());
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            redirectAttributes.addAttribute("tno", todoDTO.getTno());
             return "redirect:/todo/modify";
         }
         log.info(todoDTO);
+        todoService.modify(todoDTO);
 
-        todoService.register(todoDTO);
+        redirectAttributes.addAttribute("tno", todoDTO.getTno());
 
         return "redirect:/todo/list";
     }

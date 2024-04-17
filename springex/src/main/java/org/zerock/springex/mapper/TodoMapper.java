@@ -5,6 +5,9 @@ import org.zerock.springex.dto.PageRequestDTO;
 
 import java.util.List;
 
+// 여기서 TodoMapper는 dao처럼 쓰임
+// TodoMapper는 service에서 쓰임
+// 다시 service는 controller에서 쓰임
 public interface TodoMapper {
     String getTime();
 
