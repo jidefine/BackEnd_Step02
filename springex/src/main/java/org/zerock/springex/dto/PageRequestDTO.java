@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
+import java.time.LocalDate;
 
 /*url 요청이 들어왔을 때 함께 넘어오는 
 page, size 값을 저장하기 위한 클래스
@@ -50,4 +51,12 @@ public class PageRequestDTO {
         }
         return link;
     }
+
+    //    --------------검색 조건 관련 필드----------------
+    private String[] types; // 제목(t), 작성자(w)
+    private String keyword; // 검색어
+    private boolean finished; // 완료여부
+    private LocalDate from; // 시작시간
+    private LocalDate to; // 종료시간
+
 }
