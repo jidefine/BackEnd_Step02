@@ -94,12 +94,14 @@ public class TodoController {
     }
 
     @PostMapping("/remove")
-    public String remove(Long tno, RedirectAttributes redirectAttributes){
+    public String remove(Long tno, PageRequestDTO pageRequestDTO, RedirectAttributes redirectAttributes){
         log.info("---------------remove--------------");
         log.info("tno: " + tno);
 
         todoService.remove(tno);
 
+        redirectAttributes.addAttribute("page", 1);
+        redirectAttributes.addAttribute("size", pageRequestDTO.getSize());
         return "redirect:/todo/list";
     }
     @PostMapping("/modify")
