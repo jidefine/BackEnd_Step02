@@ -46,6 +46,7 @@ public class SampleController {
         }
     }
 
+    @GetMapping("/ex/ex2")
     public void ex2(Model model){
         log.info("ex/ex2................");
 
