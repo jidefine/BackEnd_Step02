@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h4 th:text="${list}"></h4>
+<h4 th:text="${map}"></h4>
+<h4 th:text="${dto}"></h4>
+
+<script th:inline="javascript">
+    const list = [[${list}]]
+    const map = [[${map}]]
+    const dto = [[${map}]]
+
+    console.log(list)
+    console.log(map)
+    console.log(dto)
+</script>
+</body>
+</html>
