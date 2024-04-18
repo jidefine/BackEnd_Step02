@@ -53,7 +53,7 @@ public class BoardRepositoryTests {
 
     @Test
     public void testDelete(){
-        Long bno = 1l;
+        Long bno = 100L;
 
         boardRepository.deleteById(bno);
     }

@@ -69,4 +69,12 @@ public class SampleController {
 
         model.addAttribute("dto", sampleDTO);
     }
+
+    // 작은따옴표(''): 문자(character)
+    // 큰따옴표(""): 문자열(string)
+    @GetMapping("/ex/ex3")
+    public void ex3(Model model){
+        model.addAttribute("arr",
+                new String[]{"AAA", "BBB", "CCC"});
+    }
 }
