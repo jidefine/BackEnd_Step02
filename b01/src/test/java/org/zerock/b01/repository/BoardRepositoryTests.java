@@ -80,4 +80,21 @@ public class BoardRepositoryTests {
 
         todoLiat.forEach(board -> log.info(board));
     }
+
+    @Test
+    public void testTime(){
+        String nowTime = boardRepository.getTime();
+
+        log.info("nowTime : " + nowTime);
+    }
+
+    @Test
+    public void testKeyword(){
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("bno").descending());
+
+        Page<Board> result = boardRepository.findKeyword("1", pageable);
+
+        List<Board> todoList = result.getContent();
+        todoList.forEach(board -> log.info(board));
+    }
 }
