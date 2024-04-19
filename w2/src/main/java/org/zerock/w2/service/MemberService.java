@@ -6,6 +6,7 @@ import org.zerock.w2.dao.MemberDAO;
 import org.zerock.w2.domain.MemberVO;
 import org.zerock.w2.dto.MemberDTO;
 
+@Log4j2
 public enum MemberService {
     INSTANCE;
 
@@ -25,5 +26,13 @@ public enum MemberService {
 
     public void updateUuid(String mid, String uuid) throws Exception {
         dao.updateUuid(mid, uuid);
+    }
+
+    public MemberDTO getByUUID(String uuid) throws Exception{
+        MemberVO vo = dao.selectUUID(uuid);
+
+        MemberDTO memberDTO = modelMapper.map(vo, MemberDTO.class);
+
+        return memberDTO;
     }
 }
