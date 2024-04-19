@@ -43,13 +43,45 @@ public class PageRequestDTO {
     * */
 
     public String getLink(){
-        if(link == null){
-                StringBuilder builder = new StringBuilder();
-                builder.append("page=" + this.page);
-                builder.append("&size=" + this.size);
-                link = builder.toString();
+        // 페이징 처리를 하기 위한 조건
+        /* 여러 개의 쿼리 매개변수를 한 줄에 나열할 때 
+        각 쿼리 매개변수 간에 "&"를 사용하여 구분*/
+        StringBuilder builder = new StringBuilder();
+        builder.append("page=" + this.page);
+        builder.append("&size=" + this.size);
+
+        // 완료 여부 조건
+        if(finished){
+            builder.append("&finished=on");
         }
-        return link;
+
+        // 제목/작성자 조건
+        if(types != null && types.length > 0){
+            for(int i = 0; i < types.length ; i++){
+                builder.append("&types=" + types[i]);
+            }
+        }
+
+        // 검색어 조건
+        if(keyword != null){
+            try{
+                builder.append("&keyword=" + URLEncoder.encode(keyword, "UTF-8"));
+            }catch(UnsupportedEncodingException e){
+                e.printStackTrace();
+            }
+        }
+
+        // 시작 시간
+        if(from != null){
+            builder.append("&from=" + from.toString());
+        }
+
+        // 종료 시간
+        if(to != null){
+            builder.append("&to=" + to.toString());
+        }
+
+        return builder.toString();
     }
 
     //    --------------검색 조건 관련 필드----------------
@@ -58,5 +90,15 @@ public class PageRequestDTO {
     private boolean finished; // 완료여부
     private LocalDate from; // 시작시간
     private LocalDate to; // 종료시간
+
+    public boolean checkType(String type){
+        if(this.types == null || this.types.length == 0){
+            return false;
+        }
+
+        //type 내의 type가 1개라도 일치하면 true를 리턴ㅁ
+        //1개라도 일치하지 않으면 false를 리턴
+        return Arrays.stream(this.types).anyMatch(type::equals);
+    }
 
 }
