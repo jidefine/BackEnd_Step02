@@ -5,6 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.zerock.b01.domain.Board;
+import org.zerock.b01.repository.search.BoardSearch;
+
 /* 인터페이스를 만들고
 JpaRepository를 상속받는데,
 JpaRepository<사용 (테이블)클래스명, Pk의 자료형>
@@ -18,7 +20,7 @@ private BoardRepository boardRepository;
 
 나 생성자 주입을 통해서 사용하면 된다.
 * */
-public interface BoardRepository extends JpaRepository<Board, Long> {
+public interface BoardRepository extends JpaRepository<Board, Long>, BoardSearch {
     //1) 쿼리메서드
     // https://spring.io/projects/spring-data-jpa
     //Page<Board> findByTitleContainingOrderByBnoDesc(String keyword, Pageable pageable);
