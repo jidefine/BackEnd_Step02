@@ -74,7 +74,6 @@ public class SampleController {
     // 큰따옴표(""): 문자열(string)
     @GetMapping("/ex/ex3")
     public void ex3(Model model){
-        model.addAttribute("arr",
-                new String[]{"AAA", "BBB", "CCC"});
+        model.addAttribute("arr", new String[]{"AAA", "BBB", "CCC"});
     }
 }
