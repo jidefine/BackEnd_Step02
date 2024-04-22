@@ -14,10 +14,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BoardDTO {
-    @NotEmpty
-    @Size(min=3, max=100)
+
     private Long bno;
 
+    @NotEmpty
+    @Size(min=3, max=100)
     private String title;
 
     @NotEmpty
@@ -26,7 +27,7 @@ public class BoardDTO {
     @NotEmpty
     private String writer;
 
-    private LocalDateTime resDate;
+    private LocalDateTime regDate;
 
     private LocalDateTime modDate;
 }

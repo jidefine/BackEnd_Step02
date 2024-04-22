@@ -43,7 +43,8 @@ public class BoardServiceTests {
 
     @Test
     public void testRead(){
-
+        BoardDTO boardDTO = boardService.readOne(101L);
+        log.info(boardDTO);
     }
 
     @Test
