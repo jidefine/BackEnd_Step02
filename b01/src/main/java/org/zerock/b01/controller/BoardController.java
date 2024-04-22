@@ -64,13 +64,42 @@ public class BoardController {
 
     }
 
-    @GetMapping("/read")
+    @GetMapping({"/read", "/modify"})
     public void read(Long bno, PageRequestDTO pageRequestDTO, Model model){
         BoardDTO boardDTO = boardService.readOne(bno);
 
         log.info(boardDTO);
 
-        model.addAttribute(('dto', boardDTO));
+        model.addAttribute("dto", boardDTO);
+
+        /* /board/read 요청과 /board/modify요청은 모두 bno에 해당하는 1개 row의 정보를 dto로 받는다.
+        다만 이동하는 페이지가 templates/board/read.html이고, templates/board/modify.html로 달라진다.
+        read.html은 readonly 속성으로 읽기만 가능하고, modify.html은 수정이 가능하다.
+        * */
     }
 
+    @PostMapping("/modify")
+    public String modify(PageRequestDTO pageRequestDTO,
+                         @Valid BoardDTO boardDTO,
+                         BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes){
+        log.info("board modify post......" + boardDTO);
+
+        if(bindingResult.hasErrors()){
+            log.info("has errors......");
+
+            String link = pageRequestDTO.getLink();
+
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+
+            redirectAttributes.addAttribute("bno", boardDTO.getBno());
+
+            return "redirect:/board/read";
+        }
+
+        boardService.modify(boardDTO);
+        redirectAttributes.addFlashAttribute("result", "modified");
+        redirectAttributes.addAttribute("bno", boardDTO.getBno());
+        return "redirect:/board/read";
+    }
 }
