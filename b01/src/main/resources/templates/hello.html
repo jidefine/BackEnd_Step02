@@ -1,24 +1,23 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-    <h1 th:text="${msg}"></h1>
+<h1 th:text="${msg}"></h1>
 
-<!--    브라우저에 전송은 되나 해석이 안됨(Thymelesf 적용)-->
-<!--    <div>-->
-<!--        <h1>AAAA</h1>-->
-<!--    </div>-->
+<!--/*  <h3 th:each="${sos}">SOS</h3> */-->
 
-<!--    /*브라우저에 전송 안되고 해석도 안됨(Thymelesf 적용 안됨)*/-->
-    <!--/*    <div>*/-->
-    <!--/*        <h1>BBBB</h1>*/-->
-    <!--/*    </div>*/-->
+<!--/* ${aaaa + bbb } */-->
+<!--/*
+ <div>
+    <h1>AAAA</h1>
+ </div>
+*/-->
+<div th:with="num1 = ${10}, num2 = ${20}">
+    <h4 th:text="${num1 + num2}"></h4>
+</div>
 
-    <div  th:with="num1 = ${10}, num2 = ${20}">
-        <h4 th:text="${num1 + num2}"></h4>
-    </div>
 </body>
 </html>
