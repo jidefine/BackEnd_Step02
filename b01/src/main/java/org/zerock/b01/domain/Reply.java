@@ -33,12 +33,13 @@ Hibernate:
  속도를 향상시키기 위해 일반적으로 fk에 index를 설정한다.
  */
 
-//@Table(name="Reply", indexes = {@Index(name = "idx_reply_board_bno", columnList = "board_bno")})
+@Table(name="Reply", indexes = {@Index(name = "idx_reply_board_bno", columnList = "board_bno")})
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = "board") // board 필드만 제외하고 나머지 정보만 출력
+@ToString
+//@ToString(exclude = "board") // board 필드만 제외하고 나머지 정보만 출력
 public class Reply extends BaseEntity{
     // PK, 주키, 식별자, Auto_increment(1씩 자동증가)
     @Id
