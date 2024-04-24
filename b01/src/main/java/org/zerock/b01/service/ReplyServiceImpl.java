@@ -31,6 +31,8 @@ public class ReplyServiceImpl implements ReplyService{
     public Long register(ReplyDTO replyDTO) {
         Reply reply = modelMapper.map(replyDTO, Reply.class);
 
+        log.info(reply);
+
         Long rno = replyRepository.save(reply).getRno();
 
         return rno;
@@ -38,8 +40,10 @@ public class ReplyServiceImpl implements ReplyService{
 
     @Override
     public ReplyDTO read(Long rno) {
+        // 예외처리를 위해 Optional으로 처리
         Optional<Reply> replyOptional = replyRepository.findById(rno);
 
+        // 예외처리
         Reply reply = replyOptional.orElseThrow();
 
         return modelMapper.map(reply, ReplyDTO.class);
