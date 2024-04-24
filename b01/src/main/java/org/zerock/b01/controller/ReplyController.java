@@ -80,4 +80,21 @@ public class ReplyController {
         return resultMap;
     }
 
+    // 교재는 modify 이름을 remove로 잘못 써져있음
+    // 그렇지만 실행이 되는 이유는 자바의 다형성(메서드의 이름은 동일해도 매개변수가 다르면 다르게 인식하는 것)에 의해
+    // 다른 메서드로 인식되고, 전송 방식이 DELETE/PUT의 차이가 있으므로 정상동작이 됨
+    @ApiOperation(value = "Modify Reply", notes = "PUT 방식으로 특정 댓글 수정")
+    @PutMapping(value = "/{rno}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Long> modify(@PathVariable("rno") Long rno, @RequestBody ReplyDTO replyDTO){
+
+        replyDTO.setRno(rno);
+
+        replyService.modify(replyDTO);
+
+        Map<String, Long> resultMap = new HashMap<>();
+
+        resultMap.put("rno", rno);
+
+        return resultMap;
+    }
 }
