@@ -59,11 +59,21 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
                 }
                 query.where(booleanBuilder);
             }
-            //
+            // AND bno > 0L
             query.where(board.bno.gt(0L));
+        // ORDER BY bno DESC limit 1, 10;
             this.getQuerydsl().applyPagination(pageable, query);
             List<Board> list = query.fetch();
             long count = query.fetchCount();
+
+            /* list : 실제 row 리스트들
+           pageable : 페이지 처리 필요 정보
+           count : 전체 row 갯수
+
+           페이징 처리하려면 이것들이 모두 필요하므로 묶어서 넘기려고
+           Page<E>를 상속받은 PageImpl<E> 클래스를 만들어 놓은 것이다.
+            * */
+
             return new PageImpl<>(list, pageable,count);
 
     }
@@ -87,6 +97,7 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
         //GROUB BY board의 컬럼들
         query.groupBy(board);
 
+        // OR가 AND보다 연산자 우선순위가 낮기 때문에 OR조건들은 ()괄호로 묶어준다.
         if((types != null && types.length > 0) && keyword != null){
             BooleanBuilder booleanBuilder = new BooleanBuilder();
 
@@ -102,8 +113,20 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
                         break;
                 }
             }
+
+             /*
+            WHERE (
+            board.title LIKE '%:keyword%'
+            OR
+            board.content LIKE '%:keyword%'
+            OR
+            board.writer LIKE '%:keyword%'
+            )
+            * */
+
             query.where(booleanBuilder);
         }
+        // AND board.bno > 0
         query.where(board.bno.gt(0L));
 
         // SELECT bno, title, writer, regDate, COUNT(reply) replyCount
@@ -116,7 +139,17 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
                         reply.count().as("replyCount")
                 ));
 
-        return null;
+        // paging 처리를 dtoQuery에 적용해줌(페이징 처리 sql문을 추가해줌)
+        this.getQuerydsl().applyPagination(pageable, dtoQuery);
+
+        // 쿼리 실행
+        List<BoardListReplyCountDTO> dtoList = dtoQuery.fetch();
+
+        // 현재 결과 전체 갯수
+        long count = dtoQuery.fetchCount();
+
+        // thymeleaf html에 전달하기 위해서 묶어서 리턴
+        return new PageImpl<>(dtoList, pageable, count);
     }
 
 }
