@@ -9,10 +9,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.zerock.b01.dto.upload.UploadFileDTO;
 import org.zerock.b01.dto.upload.UploadResultDTO;
 
@@ -24,6 +21,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.*;
 
 @RestController
 @Log4j2
@@ -44,8 +42,8 @@ public class UpDownController {
 
             uploadFileDTO.getFiles().forEach(multipartFile -> {
 
-                String originalName = multipartFile.getOriginalFilename();
-                log.info(originalName);
+                String originalFileName = multipartFile.getOriginalFilename();
+                log.info(originalFileName);
 
                 //업로드된 파일명을 출력하라.
                 log.info(multipartFile.getOriginalFilename());
@@ -55,7 +53,7 @@ public class UpDownController {
                 String uuid = UUID.randomUUID().toString();
 
                 // 경로와 중복되지 않는 파일 이름의 경로를 생성
-                Path savePath = Paths.get(uploadPath, uuid+"_"+originalName);
+                Path savePath = Paths.get(uploadPath, uuid+"_"+originalFileName);
 
                 boolean image = false;
 
@@ -69,7 +67,7 @@ public class UpDownController {
 
                         image = true;
 
-                        File thumbFile = new File(uploadPath, "s_" + uuid + "_" + originalName);
+                        File thumbFile = new File(uploadPath, "s_" + uuid + "_" + originalFileName);
 
                         // 200 x 200 크기의 파일을 동일한 경로에 저장한다.
                         Thumbnailator.createThumbnail(savePath.toFile(), thumbFile, 200, 200);
@@ -84,8 +82,9 @@ public class UpDownController {
                 // 요청한 브라우저로 응답을 보낸다.
                 list.add(UploadResultDTO.builder()
                                 .uuid(uuid)
-                        .fileName(originalName)
-                        .img(image).build()
+                        .fileName(originalFileName)
+                        .img(image)
+                        .build()
                 );
             });
             return list;
@@ -109,4 +108,33 @@ public class UpDownController {
         }
         return ResponseEntity.ok().headers(headers).body(resource);
     }
+
+    @ApiOperation(value = "remove 파일", notes = "DELETE 방식으로 파일 삭제")
+    @DeleteMapping("remove/{fileName}")
+    public Map<String,Boolean> removeFile(@PathVariable String fileName){
+        Resource resource = new FileSystemResource(uploadPath+File.separator + fileName);
+
+        String resourseName = resource.getFilename();
+
+        Map<String, Boolean> resultMap = new HashMap<>();
+        boolean removed = false;
+
+        try{
+            String contentType = Files.probeContentType(resource.getFile().toPath());
+            removed = resource.getFile().delete();
+
+            if(contentType.startsWith("image")){
+                File thumnailFile = new File(uploadPath + File.separator + "s_" + fileName);
+
+                thumnailFile.delete();
+            }
+        }catch(Exception e){
+            log.error(e.getMessage());
+        }
+
+        resultMap.put("result", removed);
+
+        return resultMap;
+    }
+
 }
