@@ -3,6 +3,8 @@ package org.zerock.b01.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /*DB 논리적 설계 단게에서 물리적 설계로 전환되기 전에
 * 물리적 Table로 생성되어야 할 논리적 묶음을 Entity라고 한다
@@ -15,7 +17,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = "imageSet")
 public class Board extends BaseEntity{
     /*@Id는 Pk(Primary*/
     @Id
@@ -33,5 +35,9 @@ public class Board extends BaseEntity{
         this.title = title;
         this.content = content;
     }
+
+    @OneToMany
+    @Builder.Default
+    private Set<BoardImage> imageSet = new HashSet<>();
 
 }
