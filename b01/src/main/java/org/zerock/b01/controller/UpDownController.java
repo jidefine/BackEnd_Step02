@@ -4,16 +4,25 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.log4j.Log4j2;
 import net.coobird.thumbnailator.Thumbnailator;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.zerock.b01.dto.upload.UploadFileDTO;
+import org.zerock.b01.dto.upload.UploadResultDTO;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -31,6 +40,8 @@ public class UpDownController {
 
         // 업로드된 파일들이 존재한다면
         if(uploadFileDTO.getFiles() != null){
+            final List<UploadResultDTO> list = new ArrayList<>();
+
             uploadFileDTO.getFiles().forEach(multipartFile -> {
 
                 String originalName = multipartFile.getOriginalFilename();
@@ -46,6 +57,8 @@ public class UpDownController {
                 // 경로와 중복되지 않는 파일 이름의 경로를 생성
                 Path savePath = Paths.get(uploadPath, uuid+"_"+originalName);
 
+                boolean image = false;
+
                 try{
                     // 해당 경로에 파일 저장
                     multipartFile.transferTo(savePath);
@@ -53,6 +66,8 @@ public class UpDownController {
                     // 이미지 타입의 파일이라면 썸네일 파일(작은 이미지 파일)을 만든다.
                     // 썸네일 이미지는 기존 이미지 앞에 s_를 붙인 이름이다.
                     if (Files.probeContentType(savePath).startsWith(("image"))) {
+
+                        image = true;
 
                         File thumbFile = new File(uploadPath, "s_" + uuid + "_" + originalName);
 
@@ -63,9 +78,35 @@ public class UpDownController {
                 } catch (IOException e){
                     e.printStackTrace();
                 }
+
+                // UploadResultDTO는 1개 파일의 정보이므로
+                // 여러 개 파일이 업로드 된 경우 리스트로 묶어서
+                // 요청한 브라우저로 응답을 보낸다.
+                list.add(UploadResultDTO.builder()
+                                .uuid(uuid)
+                        .fileName(originalName)
+                        .img(image).build()
+                );
             });
+            return list;
         }
 
         return null;
+    }
+
+    @ApiOperation(value = "view 파일", notes = "GET 방식으로 첨부파일 조회")
+    @GetMapping("/view/{fileName}")
+    public ResponseEntity<Resource> viewFileGET(@PathVariable String fileName){
+        Resource resource = new FileSystemResource(uploadPath+File.separator + fileName);
+
+        String resourceName = resource.getFilename();
+        HttpHeaders headers = new HttpHeaders();
+
+        try{
+            headers.add("Content-Type", Files.probeContentType(resource.getFile().toPath()));
+        }catch (Exception e){
+            return ResponseEntity.internalServerError().build();
+        }
+        return ResponseEntity.ok().headers(headers).body(resource);
     }
 }
