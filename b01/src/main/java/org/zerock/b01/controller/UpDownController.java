@@ -2,13 +2,16 @@ package org.zerock.b01.controller;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.MediaType;
+import net.coobird.thumbnailator.Thumbnailator;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.zerock.b01.dto.upload.UploadFileDTO;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
@@ -44,7 +47,19 @@ public class UpDownController {
                 Path savePath = Paths.get(uploadPath, uuid+"_"+originalName);
 
                 try{
+                    // 해당 경로에 파일 저장
                     multipartFile.transferTo(savePath);
+
+                    // 이미지 타입의 파일이라면 썸네일 파일(작은 이미지 파일)을 만든다.
+                    // 썸네일 이미지는 기존 이미지 앞에 s_를 붙인 이름이다.
+                    if (Files.probeContentType(savePath).startsWith(("image"))) {
+
+                        File thumbFile = new File(uploadPath, "s_" + uuid + "_" + originalName);
+
+                        // 200 x 200 크기의 파일을 동일한 경로에 저장한다.
+                        Thumbnailator.createThumbnail(savePath.toFile(), thumbFile, 200, 200);
+                    }
+
                 } catch (IOException e){
                     e.printStackTrace();
                 }
