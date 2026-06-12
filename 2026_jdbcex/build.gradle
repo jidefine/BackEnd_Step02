@@ -28,6 +28,14 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 
     implementation("org.mariadb.jdbc:mariadb-java-client:3.0.11")
+
+    compileOnly("org.projectlombok:lombok:1.18.46")
+    annotationProcessor("org.projectlombok:lombok:1.18.46")
+
+    testCompileOnly("org.projectlombok:lombok:1.18.46")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.46")
+
+    implementation group: 'com.zaxxer', name: 'HikariCP', version : '5.0.0'
 }
 
 test {
