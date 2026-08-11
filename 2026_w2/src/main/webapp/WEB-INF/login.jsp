@@ -17,5 +17,9 @@
     <input type="text" name="mpw">
     <button type="submit">Login</button>
   </form>
+
+  <c:if test="${param.result == 'error'}">
+    <h1>Login Error</h1>
+  </c:if>
 </body>
 </html>
