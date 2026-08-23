@@ -41,14 +41,8 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j-api:2.26.0")
     implementation("org.apache.logging.log4j:log4j-core:2.26.0")
 
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
-
     implementation("org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1")
     implementation("jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0")
-
-    testCompileOnly("org.projectlombok:lombok")
-    testAnnotationProcessor("org.projectlombok:lombok")
 }
 
 test {
